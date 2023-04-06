@@ -1,6 +1,18 @@
 function [G, hdr] = readGeoCSV(filename, dtime_fmt, dtime_tzone)
 % [G, hdr] = READGEOCSV(filename, dtime_fmt, dtime_tzone)
 %
+% Input:
+% filename             GeoCSV file name
+% dtime_fmt            Datetime format (def: 'uuuu-MM-dd''T''HH:mm:ss''Z''')
+% dtime_tzone          Datetime timezone (def: 'UTC')
+%
+% Output:
+% G                    Struct with fields dynamically generated from the MethodIdentifiers
+% hdr                  Cell array of header strings (comment and metadata lines)
+%
+% Ex:
+%    G = READGEOCSV('P0006.GeoCSV')
+%
 % Author: Joel D. Simon
 % Contact: jdsimon@alumni.princeton.edu | joeldsimon@gmail.com
 % Last modified: 05-Apr-2023, Version 9.3.0.948333 (R2017b) Update 9 on MACI64
@@ -54,20 +66,23 @@ while true
     % METADATA lines (the GeoCSV format specifies three) come before DATA lines.
     elseif startsWith(l, 'FieldUnit')
 
-        % FieldUnit
+        % Current line: FieldUnit
         funit = strsplit(l, delimiter);
 
-        % FieldType
+        % Next line: FieldType
         l = fgetl(fid);
+        hdr = [hdr ; l];
         i = i + 1;
         ftype = strsplit(l, delimiter);
 
-        % MethodIdentifier
+
+        % Next line: MethodIdentifier
         l = fgetl(fid);
+        hdr = [hdr ; l];
         i = i + 1;
         methid = strsplit(l, delimiter);
 
-        % Break after three METADATA (next line is a DATA line).
+        % Next line: DATA (break)
         break
 
     else
