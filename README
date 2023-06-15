@@ -1,8 +1,12 @@
 A Primer on the GeoCSV Metadata Format
 
+!!! These are Joel D. Simon's thoughts/opinions
+!!! These "rules" have not been voted on/adopted by the FDSN
+!!! This is a WIP
+
 Author: Joel D. Simon
 Contact: jdsimon@alumni.princeton.edu | joeldsimon@gmail.com
-Last modified: 05-Apr-2023
+Last modified: 15-Jun-2023
 
 %% ___________________________________________________________________________ %%
 
@@ -11,63 +15,65 @@ process data from moving stations (MERMAID; see http://earthscopeoceans.org/).
 It fills the metadata gap of the classic multiple-miniSEED-and-one-dataless-SEED
 workflow common for stationary seismometers.
 
-GeoCSV was written primarily by Joel D. Simon, with input from Tim Ahern
+GeoCSV was written primarily by Joel D. Simon, with direction from Tim Ahern
 (Emeritus, IRIS/EarthScope) and Guust Nolet (Emeritus, Princeton/GeoAzur)
 
 The format is (currently fluid and) inherently flexible, as other researchers
-may mold it to fit their experiments by defining custom MethodIdentifiers.  The
-archetypal example for MERMAID uses "Measurement:GPS:...",
-"Measurement:Pressure:...", and "Algorithm:automaid:...", but there is no reason
-these could not be, e.g., "Measurement:GPS:...",
-""Measurement:Conductivity:...", "Measurement:Temperature:...", and
-""Measurement:Depth:..." for a CTD-type experiment.
+may mold it to fit their experiments by defining custom fields.  The archetypal
+example for MERMAID uses the following "MethodIdenitifiers" for its data rows:
+
+    "Measurement:GPS:...",
+    "Measurement:Pressure:..."
+    "Algorithm:automaid:..."
+
+But there is no reason these could not be, e.g.:
+
+    "Measurement:GPS:...",
+    "Measurement:Conductivity:..."
+    "Measurement:Temperature:..."
+    "Measurement:Depth:..."
+
+For a GeoCSV file describing a CTD experiment.
 
 %% ___________________________________________________________________________ %%
 
 Rules, with the understanding the format is actively changing based on various
 groups' recommendations (as it moves from development to FDSN standardization).
 
-* Comments begin with "#" (hash symbol) and must be at the top of the document
-  and contiguous (e.g., comment lines may not be interspersed with later
-  METADATA or DATA lines).  Any arbitrary number of comment lines are allowed.
+* There are three types of lines in a GeoCSV file: comment, header, data.
+
+* Comments begin with "#" (hash symbol) and may be anywhere in the file.
 
   Exception: Comments may begin with " "# " (double-quote and hash symbol),
   e.g. as is used to protect a non-delimiting comma delimiter
   ("#delimiter: ','")
 
-* Two COMMENT lines are required in the from of "<description>: <value>" ->
+* Comments must in the form of "#keyword: value"; a comment line that cannot be
+  split into two strings at ":" (colon) will throw an error in a universal reader.
 
-  "#delimiter: <delimiter>" (default: "#delimiter: ','")
-  "#lineterminator: <lineterminator>" (default: "#lineterminator: '\n'")
+* Three comment lines are required at the top of the file:
 
-* Three METADATA (named and ordered as below) lines follow comments, which
-  number the same columns as the data that follow and specify their metadata ->
+    "#delimiter: <delim>"
+    "#field_type: <ftype>"
+    "#field_unit: <funit>"
 
-  FieldUnit
-  FieldType
-  MethodIdentifier
+* The first uncommented line must be a header that describes the data in each
+  column; e.g., a reader in MATLAB may use columns of the header line to define
+  the fieldnames of an output structure, and a reader in Python my use them to
+  define keys in an output dictionary.
 
-* Arbitrary DATA lines follow metadata lines, each beginning (in the first,
-  "MethodIdentifier" columns) with a provenance description, e.g. "Measurement"
-  or "Algorithm", and further detailed (at arbitrary length) by descriptions
-  separated by colons.  E.g., in the case of MERMAID - >
+* The "#field_unit" and "#field_type" comments, as well as the uncommented
+  single header line, must be delimited like the data lines and have the same
+  number of columns as the data rows that follow (e.g., all data columns must be
+  described by a type, unit, and header name)
 
-  Measurement:GPS:u-blox_NEO-M8N
-  Measurement:Pressure:KELLER_Series_6
-  Algorithm:automaid:vX.X.X-X
+* NB, some of the rules proposed in this document differ from the GeoCSV file
+  specification proposed in docs/GeoCSV_v2.0.4.pdf; e.g., the requirement
+  proposed here of three specific known keyword-comments is not adhered to in
+  the "Minimal IRIS Station example" of that document.  The author feels this
+  requirement should be maintained to allow for the adoption of universal
+  readers (ones that do not require, e.g., number or header lines or delimiter
+  character be specified) that concurrently self-document via unit type and
+  format specification.
 
-* Currently understood data types: "float" (unspecified size), "string" (char),
-  and "datetime".
-
-  As of writing: readGeoCSV.m in MATLAB casts "floats" to double precision,
-  thought they are written in single precision in the current automaid (to match
-  floats in sac/miniSEED/obspy).
-
-  As of writing: datetimes are in pseudo-IS08601 format, in UTC, to seconds
-  precision. Perhaps a future version will need better timing resolution at
-  which point the readers/writers will need to be updated (I figure seconds
-  precision is sufficient for GPS points when we are are dealing with MERMAID
-  drifts on the order of km/day, and trace timing associated with the
-  "Algorithm" rows is already contained to 1/10,000 second in the miniSEED).
-
-*More info to follow, and please excuse the typos.
+* More to follow...
