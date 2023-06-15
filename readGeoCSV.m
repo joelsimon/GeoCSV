@@ -26,11 +26,11 @@ function [G, C] = readGeoCSV(filename)
 % Datetime field types must be IS08601 format ending in "Z" with millisecond
 % precision: 'uuuu-MM-ddTHH:mm:ss.SSSZ'.
 %
-% Ex:
+% Ex: (FYI - https://github.com/joelsimon/omnia/blob/master/plotbits/longitude360.m)
 %    G = READGEOCSV('P0006.GeoCSV')
-%    figure; scatter(G.StartTime, -G.AbsolutePressure/100)
+%    figure; scatter(G.StartTime, -G.WaterPressure/100)
 %    title('dives'); xlabel('date'); ylabel('depth (m)')
-%    figure; scatterm(G.Latitude, G.Longitude)
+%    figure; scatter(G.Latitude, longitude360(G.Longitude))
 %
 % Author: Joel D. Simon
 % Contact: jdsimon@alumni.princeton.edu | joeldsimon@gmail.com
