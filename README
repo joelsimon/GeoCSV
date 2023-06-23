@@ -15,8 +15,8 @@ process data from moving stations (MERMAID; see http://earthscopeoceans.org/).
 It fills the metadata gap of the classic multiple-miniSEED-and-one-dataless-SEED
 workflow common for stationary seismometers.
 
-GeoCSV was written primarily by Joel D. Simon, with direction from Tim Ahern
-(Emeritus, IRIS/EarthScope) and Guust Nolet (Emeritus, Princeton/GeoAzur)
+GeoCSV for MERMAID was written primarily by Joel D. Simon, with direction from
+Tim Ahern (Emeritus, IRIS/EarthScope) and Guust Nolet (Emeritus, Princeton/GeoAzur).
 
 The format is (currently fluid and) inherently flexible, as other researchers
 may mold it to fit their experiments by defining custom fields.  The archetypal
