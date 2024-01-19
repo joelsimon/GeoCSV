@@ -1,0 +1,15 @@
+Q: How much bigger are the MERMAID GeoCSV files that include Depth rows (instead of
+just GPS and Algorithm rows).
+
+A: For MERMAID P0006 (longest lived) over 4.77 years the old version without
+depth rows contained 1849 lines, while the new version contained 14792 lines.
+
+Meaning --
+
+Old (w/o depth):  ~400 lines/year
+New  (w/ depth): ~3100 lines/year
+
+So it's ~8x increase, but these floats are nearing the end of their life anyway
+so the files won't get that much bigger.  A generous end member might see P0006
+live 6 years, meaning that a complete (but single-float) GeoCSV including depth
+would ultimately be about ~19000 lines.
