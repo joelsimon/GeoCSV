@@ -1,3 +1,11 @@
+GeoCSV as I have developed it has officially been voted on and approved by the
+FDSN as a new data format, and I have been submitting GeoCSV files for MERMAID
+floats the the [EarthScope (IRIS) MDA](https://ds.iris.edu/data/reports/MH/) for
+years.  The details (attributes, field names, formatting restrictions etc.) are
+still being worked out, so what follows is not fully standardized as writing.
+
+%% ___________________________________________________________________________ %%
+
 A Primer on the GeoCSV Metadata Format
 
 !!! These are Joel D. Simon's thoughts/opinions
