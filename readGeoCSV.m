@@ -34,8 +34,8 @@ function [G, C] = readGeoCSV(filename)
 %
 % Author: Joel D. Simon
 % Contact: jdsimon@alumni.princeton.edu | joeldsimon@gmail.com
-% Last modified: 27-Apr-2023, Version 9.3.0.948333 (R2017b) Update 9 on MACI64
-% Last tested: GeoCSV v2.2.0-1, automaid v3.6.0-I
+% Last modified: 26-Sep-2024, 24.1.0.2568132 (R2024a) Update 1 on MACA64 (geo_mac)
+% Last tested: GeoCSV v2.2.0-1, automaid v4.0.0-1
 
 % Future:
 % *Recognize/identify/act on other known keyword comments?
@@ -65,16 +65,14 @@ while true
 
     end
 
-    % Strip off any quotes that protect non-delimiting delimiters (e.g.,
-    % "#delimiter: ','"). If a line starts with a double quote it must also end
-    % with a double quote.
+    % Strip off any quotes that protect non-delimiting delimiters (e.g., "#delimiter: ','").
     if strcmp(l(1), '"')
         if ~strcmp(l(end), '"')
             error(['Line beginning with double quote ''"'', e.g. to protect ' ...
                    '"#delimiter: ," keyword-comment, must also end with double quote'])
 
         end
-        % If the line starts with a double quote it also ends
+        % If a line starts with double quotes it also ends with them.
         l(1) = [];
         l(end) = [];
 
