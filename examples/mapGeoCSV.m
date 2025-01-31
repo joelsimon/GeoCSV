@@ -23,11 +23,11 @@ fullscreen
 plotcont
 axis tight
 box on
-hold on
 xlabel('longitude (deg)')
 ylabel('latitude (deg)')
 
 % Scatter all floats' drift.
+hold on
 for i = 1:length(f)
     G = readGeoCSV(f{i});
     if isempty(G.Station)
@@ -38,5 +38,8 @@ for i = 1:length(f)
     sc(i) = scatter(longitude360(G.Longitude), G.Latitude);
 
 end
+hold off
 legend(sc, kstnm, 'Location', 'EastOutside')
+axesfs([], 18, 18)
 latimes2
+savepdf(mfilename)
