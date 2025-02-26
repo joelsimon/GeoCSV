@@ -1,0 +1,98 @@
+>> GeoCSV as part of automaid v4.0.2 << 
+
+Author: Joel D. Simon
+Contact: jdsimon@alumni.princeton.edu | joeldsimon@gmail.com
+Last modified: 26-Feb-2025
+
+This document only covers GeoCSV files specific to MERMAID -- Mobile Earthquake
+Recording in Marine Areas by Independent Divers. For a general overview of
+GeoCSV files, see the README and docs at
+https://github.com/joelsimon/GeoCSV. For the software used to create these
+GeoCSV files, see https://github.com/earthscopeoceans/automaid.  For details on
+the location-interpolation algorithm, see Nolet et al., 2024 (SRL), doi:
+10.1785/0220230377
+
+____
+
+
+GeoCSV structure: comments, header, data (ALL human readable)
+
+____
+
+
+[1] COMMENTS: begin with "#" in "# keyword: value" format. Example -->
+
+#dataset: GeoCSV
+#created: 2025-02-26T18:59:56.659Z
+"#description: Metadata for drifting Mobile Earthquake Recording in Marine Areas...
+#attribution: automaid v4.0.2 (https://github.com/earthscopeoceans/automaid...
+#matlab_reader: https://github.com/joelsimon/GeoCSV/blob/master/readGeoCSV.m
+#waterpressure2depth: 100 mbar is approximately equal to the pressure of 1 meter of water
+#frequency_response: http://ds.iris.edu/data/reports/MH/MH.Mermaids.Response.V3.pdf
+#lineterminator: '\n'
+"#delimiter: ','"
+#field_unit: unitless,iso8601,unitless,unitless,unitless,unitless,degrees_north,...
+#field_type: string,datetime,string,string,string,string,float,float,float,float,...
+
+The final two comments are of particular import:
+
+"#field_unit" specifies data units of columns (e.g., degrees_north or Hz)
+"#field_type" specifies data types of columns (e.g., string or float)
+
+____
+
+
+[2] HEADER: first line without "#", defines field (column) names, same number of
+            fields as "field_unit" and "field_type" comments. Example -->
+
+MethodIdentifier,StartTime,Network,Station,Location,Channel,Latitude,Longitude,...
+
+____
+
+
+[3] DATA: data value rows with same number of columns as in HEADER. Example -->
+
+Measurement:GPS:u-blox_NEO-M8N,2018-06-27T19:16:42.000Z,MH,P0006,nan,nan,-14.453383,...
+Algorithm(thermocline):automaid:v4.0.2,2018-06-27T19:35:41.808Z,MH,P0006,nan,nan,...
+Measurement:Pressure:KELLER_Series_6,2018-06-27T19:43:55.000Z,MH,P0006,nan,nan,...
+Algorithm(event):automaid:v4.0.2,2018-06-29T17:07:31.205Z,MH,P0006,00,BDH,-14.451222,...
+
+Note there are currently four "MethodIdentifier"s unique to MERMAID:
+
+    Measurement:GPS
+    Algorithm(thermocline)
+    Measurement:Pressure
+    Algorithm(event):automaid
+
+"MethodIdentifier" rows fall into one of two broad: measurement or algorithm.
+
+* "Measurement" rows are values ACTUALLY MEASURED by a piece of hardware on MERMAID
+* "Algorithm" rows are values INTERPOLATED by MERMAID-processing software "automaid"
+
+"Measurement" and "algorithm" rows each are further subdivided into two categories:
+
+* "Measurement:GPS" prints GPS fixes
+* "Measurement:Pressure" prints ambient water pressure(^1) in mbar (100 mbar ~ 1 m)
+
+* "Algorithm(thermocline):automaid" prints interpolated time/location of thermocline(^2) crossing
+* "Algorithm(event):automaid" prints interpolated time/location of start time of data recording
+
+(^1) this is why GeoCSV does not include "depth" in meters as a field type and
+unit; depths we report elsewhere are interpolated via automaid using the quoted
+conversion.
+
+(^2) the thermocline marks the transition between "surface" and "deep (or
+mixed)" layers, currently defined as 50 m depth (though changeable in automaid),
+where drift velocities are markedly different (~km/hr above; ~km/day below).
+
+
+
+
+
+
+
+
+
+
+
+

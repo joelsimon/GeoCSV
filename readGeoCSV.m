@@ -27,7 +27,7 @@ function [G, C] = readGeoCSV(filename)
 % precision: 'uuuu-MM-ddTHH:mm:ss.SSSZ'.
 %
 % Ex: (FYI - https://github.com/joelsimon/omnia/blob/master/plotbits/longitude360.m)
-%    G = READGEOCSV('P0006.GeoCSV')
+%    G = READGEOCSV('P0006_geo.csv')
 %    figure; scatter(G.StartTime, -G.WaterPressure/100)
 %    title('dives'); xlabel('date'); ylabel('depth (m)')
 %    figure; scatter(G.Latitude, longitude360(G.Longitude))
