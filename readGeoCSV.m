@@ -30,7 +30,7 @@ function [G, C] = readGeoCSV(filename)
 %    G = READGEOCSV('P0006_geo.csv')
 %    figure; scatter(G.StartTime, -G.WaterPressure/100)
 %    title('dives'); xlabel('date'); ylabel('depth (m)')
-%    figure; scatter(G.Latitude, longitude360(G.Longitude))
+%    figure; scatter(longitude360(G.Longitude), G.Latitude)
 %
 % Author: Joel D. Simon
 % Contact: jdsimon@alumni.princeton.edu | joeldsimon@gmail.com
