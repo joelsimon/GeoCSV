@@ -8,6 +8,9 @@ function P0006map
 % Last modified: 05-Nov-2025, 9.13.0.2553342 (R2022b) Update 9 on MACI64 (geo_mac)
 % (in reality: Intel MATLAB in Rosetta 2 running on an Apple silicon Mac)
 
+clc
+close all
+
 addpath('..')
 G = readGeoCSV('P0006_geo.csv');
 
