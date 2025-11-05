@@ -26,3 +26,4 @@ axesfs([], 18, 18)
 axis tight
 box on
 latimes2
+rmpath('..')
