@@ -2,20 +2,21 @@ function mapGeoCSV(procdir)
 % MAPGEOCSV(procdir)
 %
 % Generates map of whole-array MERMAID drifts.
-% Requires my OMNIA for subfuncs.
+% Requires https://github.com/joelsimon/omnia for subfuncs.
+% Requires complete processed directory [example not self contained]
 %
 % Input:
-% procdir      Processed directory (def: $MERMAID/processed3.10/)
+% procdir      Processed directory (def: $MERMAID/processed/)
 %
 % Author: Joel D. Simon
 % Contact: jdsimon@alumni.princeton.edu | joeldsimon@gmail.com
-% Last modified: 31-Jan-2025, 24.1.0.2568132 (R2024a) Update 1 on MACA64 (geo_mac)
+% Last modified: 26-Feb-2025, 24.1.0.2568132 (R2024a) Update 1 on MACA64 (geo_mac)
 
-% Default processed dir path.
-defval('procdir', fullfile(getenv('MERMAID'), 'processed3.10'))
+% % Default processed dir path.
+% defval('procdir', fullfile(getenv('MERMAID'), 'processed'))
 
-% Nab all GeoCSV files.
-f = globglob(procdir, '**/*geo_DET_REQ.csv');
+% (or glob everthing from *automaid-v4/ run)
+f = globglob('~/mermaid', 'processed_everyone', '**/*geo_DET_REQ.csv');
 
 % Plot [0:360] base map.
 figure
@@ -28,18 +29,19 @@ ylabel('latitude (deg)')
 
 % Scatter all floats' drift.
 hold on
+idx = 0;
 for i = 1:length(f)
     G = readGeoCSV(f{i});
     if isempty(G.Station)
         continue
 
     end
-    kstnm{i} = G.Station{1};
-    sc(i) = scatter(longitude360(G.Longitude), G.Latitude);
+    idx = idx + 1;
+    kstnm{idx} = G.Station{1};
+    sc(idx) = scatter(longitude360(G.Longitude), G.Latitude);
 
 end
 hold off
-legend(sc, kstnm, 'Location', 'EastOutside')
+lg = legend(sc, kstnm);
 axesfs([], 18, 18)
 latimes2
-savepdf(mfilename)
